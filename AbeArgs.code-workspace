@@ -1,0 +1,15 @@
+{
+    "folders": [
+		{
+			"path": "lib"
+		},
+		{
+			"path": "test"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"stdexcept": "cpp"
+		}
+	}
+}
