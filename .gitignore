@@ -18,6 +18,7 @@
 # Directories
 build/
 out/
+release/
 
 # Playground directories
 xcuserdata/
