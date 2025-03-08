@@ -411,7 +411,7 @@ Parser::error() const
 std::string
 Parser::getErrorMsg() const
 {
-    return _error_msg + '\n';
+    return _error_msg;
 }
 
 void

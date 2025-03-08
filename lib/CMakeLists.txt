@@ -18,7 +18,7 @@
 cmake_minimum_required(VERSION 3.8)
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
-project("AbeArgs" VERSION 0.1.250307)
+project("AbeArgs" VERSION 0.1.250308)
 
 # ---- Enable C++20 ----------------------------------
 set(CMAKE_CXX_STANDARD 20)
