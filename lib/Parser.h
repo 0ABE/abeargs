@@ -19,6 +19,7 @@
 
 // Project includes
 #include "Argument.h"
+#include "Util.h"
 
 // Standard includes
 #include <map>
@@ -43,6 +44,7 @@ class Parser
 
     Argument* addArgument(const Argument& arg);
     Argument& getArgument(int arg_ID);
+    const Argument& getArgument(int arg_ID) const;
     Argument& getArgument(const std::string& flag);
     const ArgumentList_t& getArguments() const;
 
@@ -51,6 +53,8 @@ class Parser
     bool error() const;
     std::string getErrorMsg() const;
     bool isMissingRequiredArgs() const;
+
+    bool hasArgvToken(int arg_ID) const;
 
   private:
     ValidBool_t getBoolean(const std::string& value) const;
@@ -68,6 +72,7 @@ class Parser
   private:
     ArgumentList_t _args;
     std::map<int, bool> _required_args;
+    Util::StringList_t _argv_tokens;
     std::string _error_msg;
 };
 

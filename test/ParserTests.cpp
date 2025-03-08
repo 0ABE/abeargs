@@ -361,6 +361,9 @@ ParserTests::testRequiredInteger1()
     CPPUNIT_ASSERT_EQUAL(OPT_ID_2, results[0].first);
     CPPUNIT_ASSERT_EQUAL(string("1337,1338"), get<string>(results[0].second));
     CPPUNIT_ASSERT_EQUAL(true, parser.isMissingRequiredArgs());
+    CPPUNIT_ASSERT_EQUAL(false, parser.hasArgvToken(REQ_ID_1));
+
+    CPPUNIT_ASSERT_EQUAL(true, parser.hasArgvToken(OPT_ID_2));
 }
 
 void

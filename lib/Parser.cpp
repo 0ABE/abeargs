@@ -52,6 +52,16 @@ Parser::getArgument(int arg_ID)
     return no_arg;
 }
 
+const Argument&
+Parser::getArgument(int arg_ID) const
+{
+    for (const Argument& arg : const_cast<ArgumentList_t&>(_args))
+        if (arg.getID() == arg_ID)
+            return arg;
+
+    return no_arg;
+}
+
 Argument&
 Parser::getArgument(const std::string& flag)
 {
@@ -219,12 +229,12 @@ Parser::exec(const string& argv)
     Util::replaceAll(argv_str, ',', space_char, pairs, pairs_len);
 
     // Tokenize the arguments (separate with the space_char).
-    Util::StringList_t argv_tokens = Util::tokenize(argv_str, space_char);
+    _argv_tokens = Util::tokenize(argv_str, space_char);
     // Join any tokens surrounded by string_pairs.
     for (size_t i = 0; i < pairs_len; i = i + 2)
-        argv_tokens = Util::joinDelimitedTokens(argv_tokens, pairs[i], pairs[i + 1], space_char);
+        _argv_tokens = Util::joinDelimitedTokens(_argv_tokens, pairs[i], pairs[i + 1], space_char);
     // Get the new number of arguments.
-    const int argc = argv_tokens.size();
+    const int argc = _argv_tokens.size();
 
     for (size_t i = 0, n = argc; i < n; ++i) {
         int next_i = i + 1;
@@ -233,14 +243,14 @@ Parser::exec(const string& argv)
         if (error())
             break;
 
-        arg = getArgument(argv_tokens[i]);
+        arg = getArgument(_argv_tokens[i]);
         if (arg.isValidArg()) {
 
             // Arguments can be created with default long and short names.
             // These defaults signify an empty flag option.
             // If a user knows the default and tries to use the empty arg name, ignore it.
-            if (arg.matchesDefaultFlag(argv_tokens[i])) {
-                setErrorMsg("error: Unrecognized command-line option: " + argv_tokens[i]);
+            if (arg.matchesDefaultFlag(_argv_tokens[i])) {
+                setErrorMsg("error: Unrecognized command-line option: " + _argv_tokens[i]);
                 break;
             }
 
@@ -269,12 +279,12 @@ Parser::exec(const string& argv)
                     continue;
                 } else if ((num_params == 1) && has_next_i) {
                     // The value of the switch is defined by the next parameter.
-                    const auto result = getBoolean(argv_tokens[next_i]);
+                    const auto result = getBoolean(_argv_tokens[next_i]);
                     if (result.first)
                         // If a boolean was found, assign the value.
                         results.push_back(make_pair(arg.getID(), result.second));
                     else
-                        setErrorMsg("error: Invalid boolean: " + argv_tokens[next_i]);
+                        setErrorMsg("error: Invalid boolean: " + _argv_tokens[next_i]);
                     i = next_i;
                     continue;
                 }
@@ -284,38 +294,38 @@ Parser::exec(const string& argv)
 
                     // Verify the type and add to the results.
                     if (arg_is_string_type) {
-                        const string param_value = argv_tokens[next_i];
+                        const string param_value = _argv_tokens[next_i];
                         results.push_back(make_pair(arg.getID(), param_value));
                     } else if (arg_is_file_type) {
-                        const char* param_cstr_value = argv_tokens[next_i].c_str();
+                        const char* param_cstr_value = _argv_tokens[next_i].c_str();
                         if (fileExists(param_cstr_value))
                             results.push_back(make_pair(arg.getID(), param_cstr_value));
                         else
-                            setErrorMsg("error: File not found: " + argv_tokens[next_i]);
+                            setErrorMsg("error: File not found: " + _argv_tokens[next_i]);
                     } else if (arg_is_bool_type) {
-                        const auto result = getBoolean(argv_tokens[next_i]);
+                        const auto result = getBoolean(_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid boolean: " + argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid boolean: " + _argv_tokens[next_i]);
                     } else if (arg_is_int_type) {
-                        const auto result = getInteger(argv_tokens[next_i]);
+                        const auto result = getInteger(_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid integer: " + argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid integer: " + _argv_tokens[next_i]);
                     } else if (arg_is_float_type) {
-                        const auto result = getFloat(argv_tokens[next_i]);
+                        const auto result = getFloat(_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid float: " + argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid float: " + _argv_tokens[next_i]);
                     } else if (arg_is_double_type) {
-                        const auto result = getDouble(argv_tokens[next_i]);
+                        const auto result = getDouble(_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid double: " + argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid double: " + _argv_tokens[next_i]);
                     }
 
                     if (!error()) {
@@ -342,26 +352,26 @@ Parser::exec(const string& argv)
 
                         if (arg_is_bool_type) {
                             value_type_str = "boolean";
-                            const auto result = getBoolean(argv_tokens[j]);
+                            const auto result = getBoolean(_argv_tokens[j]);
                             result_ok = result.first;
                         } else if (arg_is_int_type) {
                             value_type_str = "int";
-                            const auto result = getInteger(argv_tokens[j]);
+                            const auto result = getInteger(_argv_tokens[j]);
                             result_ok = result.first;
                         } else if (arg_is_float_type) {
                             value_type_str = "float";
-                            const auto result = getFloat(argv_tokens[j]);
+                            const auto result = getFloat(_argv_tokens[j]);
                             result_ok = result.first;
                         } else if (arg_is_double_type) {
                             value_type_str = "double";
-                            const auto result = getDouble(argv_tokens[j]);
+                            const auto result = getDouble(_argv_tokens[j]);
                             result_ok = result.first;
                         }
 
                         if (result_ok) {
-                            str_results[idx++] = argv_tokens[j];
+                            str_results[idx++] = _argv_tokens[j];
                         } else {
-                            setErrorMsg("error: Invalid " + value_type_str + ": " + argv_tokens[j]);
+                            setErrorMsg("error: Invalid " + value_type_str + ": " + _argv_tokens[j]);
                             break;
                         }
                     }
@@ -380,7 +390,7 @@ Parser::exec(const string& argv)
                 }
             }
         } else {
-            setErrorMsg("error: Unrecognized command-line option: " + argv_tokens[i]);
+            setErrorMsg("error: Unrecognized command-line option: " + _argv_tokens[i]);
             break;
         }
     }
@@ -431,6 +441,19 @@ Parser::isMissingRequiredArgs() const
         missing |= arg_missing;
 
     return missing;
+}
+
+bool
+Parser::hasArgvToken(int arg_ID) const
+{
+    const Argument arg = getArgument(arg_ID);
+    if (Util::contains(_argv_tokens, arg.getShortFlag()))
+        return true;
+
+    if (Util::contains(_argv_tokens, arg.getLongFlag()))
+        return true;
+
+    return false;
 }
 
 } // namespace AbeArgs

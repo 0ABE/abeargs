@@ -110,6 +110,9 @@ class Argument
     std::string getLongFlagChars() const { return _long_flag_chars; }
     std::string getShortFlagChars() const { return _short_flag_chars; }
 
+    std::string getShortFlag() const;
+    std::string getLongFlag() const;
+
     bool matchesDefaultFlag(const std::string& value) const;
     bool matchesFlag(const std::string& value) const;
 

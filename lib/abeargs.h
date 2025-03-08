@@ -15,5 +15,6 @@
  * as shown at https://oss.oracle.com/licenses/upl/.
  */
 
-// #include "Argument.h"
+#include "Argument.h"
+#include "Defaults.h"
 #include "Parser.h"

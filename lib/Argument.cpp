@@ -96,6 +96,18 @@ Argument::setFlagType(Argument_t flag_type)
     }
 }
 
+std::string
+Argument::getShortFlag() const
+{
+    return _short_flag_chars + _short_flag_name;
+}
+
+std::string
+Argument::getLongFlag() const
+{
+    return _long_flag_chars + _long_flag_name;
+}
+
 bool
 Argument::matchesDefaultFlag(const std::string& value) const
 {
