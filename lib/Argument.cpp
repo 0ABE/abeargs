@@ -149,19 +149,20 @@ Argument::toString() const
     for (int i = 0; i < space_diff; ++i)
         spaces += " ";
 
-    std::string first = _short_flag_chars + _short_flag_name + column_space +
-                        long_flag_chars + long_flag_name + spaces;
-    const int first_len = first.length();
-    std::string first_space{};
-    for (int i = 0; i < first_len; ++i)
-        first_space += " ";
+    const std::string flags = _short_flag_chars + _short_flag_name + column_space +
+                              long_flag_chars + long_flag_name + spaces;
+    const int flags_len = flags.length();
+    std::string flags_space{};
+    for (int i = 0; i < flags_len; ++i)
+        flags_space += " ";
 
-    std::string str_result = '\t' + first + _description;
+    std::string str_result = '\t' + flags + _description;
 
-    if (hasDefaultValue()) {
-        std::string default_value = getDefaultValueToString();
-        str_result += "\n\t" + first_space + "(default = " + getDefaultValueToString() + ")";
-    }
+    if (isRequired())
+        str_result += " (Required)";
+
+    if (hasDefaultValue())
+        str_result += "\n\t" + flags_space + "(default = " + getDefaultValueToString() + ")";
 
     return str_result;
 }
