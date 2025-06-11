@@ -18,14 +18,25 @@
 cmake_minimum_required(VERSION 3.8)
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
-project("AbeArgsTest" VERSION 0.1.250211)
-
 # ---- Enable C++20 ----------------------------------
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ---- Stick to the standard -------------------------
 set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
+
+project("AbeArgs" VERSION 0.1.250309)
+
+# Define the library target.
+add_subdirectory(lib)
+
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    option(BUILD_TESTS "whether or not to build tests" ON)
+    if(BUILD_TESTS)
+        enable_testing()
+        add_subdirectory(tests)
+    endif()
+endif()
 
 # ---- Choose a build type ---------------------------
 #
@@ -39,21 +50,5 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # set(CMAKE_BUILD_TYPE Debug)
 # add_compile_definitions(DEBUG_BUILD)
 # ---- Release ---------------------------------------
-# set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 # ----------------------------------------------------
-
-# ---- Source code defined  --------------------------
-list(APPEND SRC_CODE
-  "ParserTests.cpp"
-  "ParserTests.h"
-  "main.cpp"
-)
-
-# Path to the AbeArgs library
-link_directories(../lib/build)
-
-# Add source code to this project's executable.
-add_executable(${CMAKE_PROJECT_NAME} ${SRC_CODE})
-
-# Link the following libraries into the executable.
-target_link_libraries(${CMAKE_PROJECT_NAME} libAbeArgs.a libcppunit.a)

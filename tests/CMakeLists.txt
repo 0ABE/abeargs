@@ -16,17 +16,17 @@
 # 
 
 # ---- Source code defined  --------------------------
-list(APPEND LIB_SRC_CODE
-    "Argument.cpp"
-    "Argument.h"
-    "Defaults.h"
-    "Math.h"
-    "Parser.cpp"
-    "Parser.h"
-    "Util.h"
+list(APPEND TESTS_SRC_CODE
+  "ParserTests.cpp"
+  "ParserTests.h"
+  "main.cpp"
 )
 
-# ---- Shared or static libraries --------------------
-# add_library("AbeArgs" SHARED ${LIB_SRC_CODE})
-add_library("AbeArgs" STATIC ${LIB_SRC_CODE})
-# ----------------------------------------------------
+# Path to the AbeArgs library
+link_directories(../build/lib)
+
+# Add source code to this project's executable.
+add_executable(AbeArgsTests ${TESTS_SRC_CODE})
+
+# Link the following libraries into the executable.
+target_link_libraries(AbeArgsTests libAbeArgs.a libcppunit.a)

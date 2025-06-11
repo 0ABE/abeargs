@@ -1,18 +1,12 @@
 {
-    "folders": [
+	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "lib"
-		},
-		{
-			"path": "test"
 		}
 	],
 	"settings": {
 		"files.associations": {
 			"stdexcept": "cpp"
 		}
-	}
+	},
 }

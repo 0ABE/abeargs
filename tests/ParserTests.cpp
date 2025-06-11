@@ -103,7 +103,7 @@ ParserTests::testSwitch()
 
     results = parser.exec("-3");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 }
 
@@ -122,7 +122,7 @@ ParserTests::testXSwitch_short()
 
     results = parser.exec("-i");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 }
 
@@ -141,7 +141,7 @@ ParserTests::testXSwitch_long()
 
     results = parser.exec("--info");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 }
 
@@ -160,7 +160,7 @@ ParserTests::testSlashSwitch()
 
     results = parser.exec("/b");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 }
 
@@ -182,7 +182,7 @@ ParserTests::testOptionalInteger1()
 
     results = parser.exec("-1=3.14");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 }
 
@@ -206,13 +206,13 @@ ParserTests::testOptionalInteger2()
 
     results = parser.exec("-1=1337,1338");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(OPT_ID_1, results[0].first);
     CPPUNIT_ASSERT_EQUAL(1337, get<int>(results[0].second));
 
     results = parser.exec("-1=3.14");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 
     results = parser.exec("-2=1337,1338");
@@ -222,7 +222,7 @@ ParserTests::testOptionalInteger2()
 
     results = parser.exec("-2=1337,1338,1339");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(OPT_ID_2, results[0].first);
     CPPUNIT_ASSERT_EQUAL(string("1337,1338"), get<string>(results[0].second));
 
@@ -233,7 +233,7 @@ ParserTests::testOptionalInteger2()
 
     results = parser.exec("-3=1337,13.38,1339");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(static_cast<int>(NO_ARG), results[0].first);
 }
 
@@ -257,7 +257,7 @@ ParserTests::testOptionalFloat1()
 
     results = parser.exec("-1=13.37,13.38");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(OPT_ID_1, results[0].first);
     CPPUNIT_ASSERT_EQUAL((float)13.37, get<float>(results[0].second));
 
@@ -273,7 +273,7 @@ ParserTests::testOptionalFloat1()
 
     results = parser.exec("-2=1337,1338,1339");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(OPT_ID_2, results[0].first);
     CPPUNIT_ASSERT_EQUAL(string("1337,1338"), get<string>(results[0].second));
 
@@ -308,7 +308,7 @@ ParserTests::testOptionalDouble1()
 
     results = parser.exec("-1=13.37,13.38");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(OPT_ID_1, results[0].first);
     CPPUNIT_ASSERT_EQUAL((double)13.37, get<double>(results[0].second));
 
@@ -324,7 +324,7 @@ ParserTests::testOptionalDouble1()
 
     results = parser.exec("-2=1337,1338,1339");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
     CPPUNIT_ASSERT_EQUAL(OPT_ID_2, results[0].first);
     CPPUNIT_ASSERT_EQUAL(string("1337,1338"), get<string>(results[0].second));
 
@@ -401,7 +401,7 @@ ParserTests::testMissingLongDashFlag()
 
     results = parser.exec("--default_long_flag");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
 }
 
 void
@@ -419,7 +419,7 @@ ParserTests::testMissingLongSlashFlag()
 
     results = parser.exec("/default_long_flag");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
 }
 
 void
@@ -437,7 +437,7 @@ ParserTests::testMissingShortDashFlag()
 
     results = parser.exec("--default_short_flag");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
 }
 
 void
@@ -455,7 +455,7 @@ ParserTests::testMissingShortSlashFlag()
 
     results = parser.exec("/default_short_flag");
     CPPUNIT_ASSERT_EQUAL(true, parser.error());
-    cout << __func__ << ": " << parser.getErrorMsg();
+    cout << __func__ << ": " << parser.getErrorMsg() << "\n";
 }
 
 void
