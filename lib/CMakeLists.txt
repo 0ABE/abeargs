@@ -16,7 +16,7 @@
 # 
 
 # ---- Source code defined  --------------------------
-list(APPEND LIB_SRC_CODE
+list(APPEND ABEARGS_SRC_CODE
     "Argument.cpp"
     "Argument.h"
     "Defaults.h"
@@ -27,6 +27,9 @@ list(APPEND LIB_SRC_CODE
 )
 
 # ---- Shared or static libraries --------------------
-# add_library("AbeArgs" SHARED ${LIB_SRC_CODE})
-add_library("AbeArgs" STATIC ${LIB_SRC_CODE})
+# add_library(AbeArgs SHARED ${ABEARGS_SRC_CODE})
+add_library(AbeArgs STATIC ${ABEARGS_SRC_CODE})
 # ----------------------------------------------------
+
+# Export the include dir.
+set(ABEARGS_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR} CACHE PATH "AbeArgs include dir")

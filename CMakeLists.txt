@@ -25,7 +25,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
 
-project("AbeArgs" VERSION 0.1.250610)
+project(AbeArgs VERSION 0.1.250611)
 
 # Define the library target.
 add_subdirectory(lib)

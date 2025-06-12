@@ -16,17 +16,17 @@
 # 
 
 # ---- Source code defined  --------------------------
-list(APPEND TESTS_SRC_CODE
+list(APPEND ABEARGSTESTS_SRC_CODE
   "ParserTests.cpp"
   "ParserTests.h"
   "main.cpp"
 )
 
-# Path to the AbeArgs library
+# Path to the AbeArgs library.
 link_directories(../build/lib)
 
 # Add source code to this project's executable.
-add_executable(AbeArgsTests ${TESTS_SRC_CODE})
+add_executable(AbeArgsTests ${ABEARGSTESTS_SRC_CODE})
 
 # Link the following libraries into the executable.
 target_link_libraries(AbeArgsTests libAbeArgs.a libcppunit.a)
