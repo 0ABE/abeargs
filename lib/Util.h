@@ -149,8 +149,8 @@ class Util
         const int num_pairs = p_pairs_len / 2;
 
         // Split the pairs into openers and closers.
-        char openers[num_pairs] = {};
-        char closers[num_pairs] = {};
+        char openers[num_pairs];
+        char closers[num_pairs];
         for (int i = 0, j = 0; i < num_pairs; ++i, j += 2) {
             openers[i] = p_pairs[j];
             closers[i] = p_pairs[j + 1];
