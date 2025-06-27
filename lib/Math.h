@@ -29,33 +29,33 @@ class Math
     /**
      * @brief Test if 2 numbers are equal within an epsilon amount.
      *
-     * @param a The first number
-     * @param b The second number
-     * @param eps The difference allowed between them
+     * @param p_a The first number
+     * @param p_b The second number
+     * @param p_eps The difference allowed between them
      * @return bool
      */
     template<class T>
-    static bool isEqual(T a, T b, T eps = 1e-6)
+    static bool isEqual(T p_a, T p_b, T p_eps = 1e-6)
     {
         // c = fabs(a - b)
-        T c = abs(a - b);
-        return (c <= eps);
+        T c = abs(p_a - p_b);
+        return (c <= p_eps);
     }
 
     /**
      * @brief Absolute value of a T.
      *
-     * @param c The template type value.
+     * @param p_c The template type value.
      * @return A positive template type value.
      */
     template<class T>
     static T
-    abs(T c)
+    abs(T p_c)
     {
-        if (c < 0)
-            c *= -1;
+        if (p_c < 0)
+            p_c *= -1;
 
-        return c;
+        return p_c;
     }
 };
 

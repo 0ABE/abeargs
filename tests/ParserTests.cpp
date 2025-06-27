@@ -32,7 +32,7 @@ ParserTests::testStrings1()
     const int STR_ID_1 = 1;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, STR_ID_1, "1", "one", "Optional argument 1", STRING_t, 1 });
+    parser.addArgument({ OPTIONAL, STR_ID_1, "1", "one", "Optional argument 1", STRING_TYPE, 1 });
 
     ParsedArguments_t results;
     results = parser.exec("-1=This_is_a_long_string");
@@ -47,7 +47,7 @@ ParserTests::testStrings2()
     const int STR_ID_1 = 1;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, STR_ID_1, "1", "one", "Optional argument 1", STRING_t, 1 });
+    parser.addArgument({ OPTIONAL, STR_ID_1, "1", "one", "Optional argument 1", STRING_TYPE, 1 });
 
     ParsedArguments_t results;
     results = parser.exec("-1='This is =A= long string'");
@@ -63,8 +63,8 @@ ParserTests::testStrings3()
     const int STR_ID_2 = 2;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, STR_ID_1, "1", "one", "Optional argument 1", STRING_t, 1 });
-    parser.addArgument({ OPTIONAL, STR_ID_2, "2", "two", "Optional argument 2", STRING_t, 1 });
+    parser.addArgument({ OPTIONAL, STR_ID_1, "1", "one", "Optional argument 1", STRING_TYPE, 1 });
+    parser.addArgument({ OPTIONAL, STR_ID_2, "2", "two", "Optional argument 2", STRING_TYPE, 1 });
 
     ParsedArguments_t results;
     results = parser.exec("-1='This is a long string' -2=Second");
@@ -151,7 +151,7 @@ ParserTests::testSlashSwitch()
     const int ARG_ID = 1;
 
     Parser parser;
-    parser.addArgument({ X_SWITCH, ARG_ID, "a", "about", "Show some info about the app" })->setFlagType(Argument_t::SLASH_FLAG);
+    parser.addArgument({ X_SWITCH, ARG_ID, "a", "about", "Show some info about the app" })->setFlagType(ArgumentType::SLASH_FLAG);
 
     ParsedArguments_t results;
     results = parser.exec("/a");
@@ -171,8 +171,8 @@ ParserTests::testOptionalInteger1()
     const int OPT_ID_2 = 2;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", INTEGER_t, 1 });
-    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_t, 1 });
+    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", INTEGER_TYPE, 1 });
+    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_TYPE, 1 });
 
     ParsedArguments_t results;
     results = parser.exec("-1=1337");
@@ -194,9 +194,9 @@ ParserTests::testOptionalInteger2()
     const int OPT_ID_3 = 3;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", INTEGER_t, 1 });
-    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_t, 2 });
-    parser.addArgument({ OPTIONAL, OPT_ID_3, "3", "three", "Optional argument 3", INTEGER_t, 3 });
+    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", INTEGER_TYPE, 1 });
+    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_TYPE, 2 });
+    parser.addArgument({ OPTIONAL, OPT_ID_3, "3", "three", "Optional argument 3", INTEGER_TYPE, 3 });
 
     ParsedArguments_t results;
     results = parser.exec("-1=1337");
@@ -245,9 +245,9 @@ ParserTests::testOptionalFloat1()
     const int OPT_ID_3 = 3;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", FLOAT_t, 1 });
-    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", FLOAT_t, 2 });
-    parser.addArgument({ OPTIONAL, OPT_ID_3, "3", "three", "Optional argument 3", FLOAT_t, 3 });
+    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", FLOAT_TYPE, 1 });
+    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", FLOAT_TYPE, 2 });
+    parser.addArgument({ OPTIONAL, OPT_ID_3, "3", "three", "Optional argument 3", FLOAT_TYPE, 3 });
 
     ParsedArguments_t results;
     results = parser.exec("-1=13.37");
@@ -296,9 +296,9 @@ ParserTests::testOptionalDouble1()
     const int OPT_ID_3 = 3;
 
     Parser parser;
-    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", DOUBLE_t, 1 });
-    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", DOUBLE_t, 2 });
-    parser.addArgument({ OPTIONAL, OPT_ID_3, "3", "three", "Optional argument 3", DOUBLE_t, 3 });
+    parser.addArgument({ OPTIONAL, OPT_ID_1, "1", "one", "Optional argument 1", DOUBLE_TYPE, 1 });
+    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", DOUBLE_TYPE, 2 });
+    parser.addArgument({ OPTIONAL, OPT_ID_3, "3", "three", "Optional argument 3", DOUBLE_TYPE, 3 });
 
     ParsedArguments_t results;
     results = parser.exec("-1=13.37");
@@ -346,8 +346,8 @@ ParserTests::testRequiredInteger1()
     const int OPT_ID_2 = 2;
 
     Parser parser;
-    parser.addArgument({ REQUIRED, REQ_ID_1, "1", "one", "Required argument 1", INTEGER_t, 1 });
-    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_t, 2 });
+    parser.addArgument({ REQUIRED, REQ_ID_1, "1", "one", "Required argument 1", INTEGER_TYPE, 1 });
+    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_TYPE, 2 });
 
     ParsedArguments_t results;
     results = parser.exec("-1=10");
@@ -465,8 +465,8 @@ ParserTests::testDefaultValues1()
     const int OPT_ID_2 = 2;
 
     Parser parser;
-    parser.addArgument({ REQUIRED, REQ_ID_1, "1", "one", "Required argument 1", INTEGER_t, 1 })->setDefaultValue(1);
-    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_t, 2 });
+    parser.addArgument({ REQUIRED, REQ_ID_1, "1", "one", "Required argument 1", INTEGER_TYPE, 1 })->setDefaultValue(1);
+    parser.addArgument({ OPTIONAL, OPT_ID_2, "2", "two", "Optional argument 2", INTEGER_TYPE, 2 });
 
     CPPUNIT_ASSERT_EQUAL(1, get<int>(parser.getArgument(REQ_ID_1).getDefaultValue()));
 

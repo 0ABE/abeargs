@@ -30,85 +30,85 @@ using namespace std;
 
 namespace AbeArgs {
 
-static Argument no_arg;
+static Argument s_no_arg;
 
 Argument*
-Parser::addArgument(const Argument& arg)
+Parser::addArgument(const Argument& p_arg)
 {
-    _args.push_back(std::move(arg));
-    if (arg.isRequired())
+    m_args.push_back(std::move(p_arg));
+    if (p_arg.isRequired())
         // Arguments start out missing (they haven't been parsed yet).
-        _required_args.insert({ arg.getID(), true });
-    return &_args.back();
+        m_required_args.insert({ p_arg.getID(), true });
+    return &m_args.back();
 }
 
 Argument&
-Parser::getArgument(int arg_ID)
+Parser::getArgument(int p_arg_ID)
 {
-    for (Argument& arg : _args)
-        if (arg.getID() == arg_ID)
+    for (Argument& arg : m_args)
+        if (arg.getID() == p_arg_ID)
             return arg;
 
-    return no_arg;
+    return s_no_arg;
 }
 
 const Argument&
-Parser::getArgument(int arg_ID) const
+Parser::getArgument(int p_arg_ID) const
 {
-    for (const Argument& arg : const_cast<ArgumentList_t&>(_args))
-        if (arg.getID() == arg_ID)
+    for (const Argument& arg : const_cast<ArgumentList_t&>(m_args))
+        if (arg.getID() == p_arg_ID)
             return arg;
 
-    return no_arg;
+    return s_no_arg;
 }
 
 Argument&
-Parser::getArgument(const std::string& flag)
+Parser::getArgument(const std::string& p_flag)
 {
-    for (Argument& arg : _args)
-        if (arg.matchesFlag(flag))
+    for (Argument& arg : m_args)
+        if (arg.matchesFlag(p_flag))
             return arg;
 
-    return no_arg;
+    return s_no_arg;
 }
 
 const ArgumentList_t&
 Parser::getArguments() const
 {
-    return _args;
+    return m_args;
 }
 
 // Boolean testing can be done for internal look-aheads (quietly), or
 // somewhat noisily when evaluating user input.
 ValidBool_t
-Parser::getBoolean(const string& value) const
+Parser::getBoolean(const string& p_value) const
 {
     bool is_boolean = false;
 
     // Test for true params.
-    is_boolean |= (0 == strcasecmp("t", value.c_str()));
-    is_boolean |= (0 == strcasecmp("true", value.c_str()));
-    is_boolean |= (0 == strcasecmp("y", value.c_str()));
-    is_boolean |= (0 == strcasecmp("yes", value.c_str()));
-    is_boolean |= (0 == strcasecmp("1", value.c_str()));
-    is_boolean |= (0 == strcasecmp("on", value.c_str()));
+    is_boolean |= (0 == strcasecmp("t", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("true", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("y", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("yes", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("1", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("on", p_value.c_str()));
     if (is_boolean)
         // Return a boolean that is true.
         return make_pair(true, true);
 
     // Test for false params.
-    is_boolean |= (0 == strcasecmp("f", value.c_str()));
-    is_boolean |= (0 == strcasecmp("false", value.c_str()));
-    is_boolean |= (0 == strcasecmp("n", value.c_str()));
-    is_boolean |= (0 == strcasecmp("no", value.c_str()));
-    is_boolean |= (0 == strcasecmp("0", value.c_str()));
-    is_boolean |= (0 == strcasecmp("off", value.c_str()));
+    is_boolean |= (0 == strcasecmp("f", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("false", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("n", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("no", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("0", p_value.c_str()));
+    is_boolean |= (0 == strcasecmp("off", p_value.c_str()));
     if (is_boolean)
         // Return a boolean that is false.
         return make_pair(true, false);
 
 #ifdef DEBUG_BUILD
-    std::cerr << "error[b]: Invalid boolean: " << value << '\n';
+    std::cerr << "error[b]: Invalid boolean: " << p_value << '\n';
 #endif
 
     // Don't return a boolean.
@@ -116,22 +116,22 @@ Parser::getBoolean(const string& value) const
 }
 
 ValidInt_t
-Parser::getInteger(const string& value) const
+Parser::getInteger(const string& p_value) const
 {
     try {
-        const int int_value = stoi(value);
+        const int int_value = stoi(p_value);
         const string str_value = to_string(int_value);
-        if (str_value == value)
+        if (str_value == p_value)
             return make_pair(true, int_value);
         else {
 #ifdef DEBUG_BUILD
-            std::cerr << "error[i0]: Invalid integer: " << value << '\n';
+            std::cerr << "error[i0]: Invalid integer: " << p_value << '\n';
 #endif
             return make_pair(false, 0);
         }
     } catch (const invalid_argument& inv_arg) {
 #ifdef DEBUG_BUILD
-        std::cerr << "error[i1]: Invalid integer: " << value << '\n';
+        std::cerr << "error[i1]: Invalid integer: " << p_value << '\n';
 #endif
     }
     // Don't return an integer.
@@ -139,10 +139,10 @@ Parser::getInteger(const string& value) const
 }
 
 ValidFloat_t
-Parser::getFloat(const string& value) const
+Parser::getFloat(const string& p_value) const
 {
     // Convert to a float value.
-    const float f1_value = strtod(value.c_str(), nullptr);
+    const float f1_value = strtod(p_value.c_str(), nullptr);
     // Convert the float back to a string value.
     const string str_value = to_string(f1_value);
     // Convert to a float (again).
@@ -153,7 +153,7 @@ Parser::getFloat(const string& value) const
         return make_pair(true, f1_value);
 
 #ifdef DEBUG_BUILD
-    std::cerr << "error[f0]: Invalid float: " << value << '\n';
+    std::cerr << "error[f0]: Invalid float: " << p_value << '\n';
 #endif
 
     // Don't return a float.
@@ -161,10 +161,10 @@ Parser::getFloat(const string& value) const
 }
 
 ValidDouble_t
-Parser::getDouble(const string& value) const
+Parser::getDouble(const string& p_value) const
 {
     // Convert to a double value.
-    const double d1_value = strtod(value.c_str(), nullptr);
+    const double d1_value = strtod(p_value.c_str(), nullptr);
     // Convert the double back to a string value.
     const string str_value = to_string(d1_value);
     // Convert to a double value (again).
@@ -175,7 +175,7 @@ Parser::getDouble(const string& value) const
         return make_pair(true, d1_value);
 
 #ifdef DEBUG_BUILD
-    std::cerr << "error[d0]: Invalid double: " << value << '\n';
+    std::cerr << "error[d0]: Invalid double: " << p_value << '\n';
 #endif
 
     // Don't return a double.
@@ -183,9 +183,9 @@ Parser::getDouble(const string& value) const
 }
 
 bool
-Parser::fileExists(const char* file_path) const
+Parser::fileExists(const char* p_file_path) const
 {
-    if (FILE* file = fopen(file_path, "r")) {
+    if (FILE* file = fopen(p_file_path, "r")) {
         fclose(file);
         return true;
     }
@@ -193,15 +193,15 @@ Parser::fileExists(const char* file_path) const
 }
 
 ParsedArguments_t
-Parser::exec(int argc, char* argv[])
+Parser::exec(int p_argc, char* p_argv[])
 {
     // Combine the exec line into one string for parsing by the parser.
     // Start at 1 to exclude the executable name (argv[0]).
 
     std::string argv_str{};
-    for (int i = 1; i < argc; ++i) {
-        argv_str += argv[i];
-        if (i + 1 < argc)
+    for (int i = 1; i < p_argc; ++i) {
+        argv_str += p_argv[i];
+        if (i + 1 < p_argc)
             argv_str += " ";
     }
 
@@ -209,7 +209,7 @@ Parser::exec(int argc, char* argv[])
 }
 
 ParsedArguments_t
-Parser::exec(const string& argv)
+Parser::exec(const string& p_argv)
 {
     clearError();
     resetMissingArgs();
@@ -222,19 +222,19 @@ Parser::exec(const string& argv)
     const int pairs_len = sizeof(pairs) / sizeof(char);
 
     // Make a copy of argv.
-    string argv_str = argv;
+    string argv_str = p_argv;
     // Replace all '=' with ' ' except if within a block of pairs.
     Util::replaceAll(argv_str, '=', space_char, pairs, pairs_len);
     // Replace all ',' with ' ' except if within a block of pairs.
     Util::replaceAll(argv_str, ',', space_char, pairs, pairs_len);
 
     // Tokenize the arguments (separate with the space_char).
-    _argv_tokens = Util::tokenize(argv_str, space_char);
+    m_argv_tokens = Util::tokenize(argv_str, space_char);
     // Join any tokens surrounded by string_pairs.
     for (size_t i = 0; i < pairs_len; i = i + 2)
-        _argv_tokens = Util::joinDelimitedTokens(_argv_tokens, pairs[i], pairs[i + 1], space_char);
+        m_argv_tokens = Util::joinDelimitedTokens(m_argv_tokens, pairs[i], pairs[i + 1], space_char);
     // Get the new number of arguments.
-    const int argc = _argv_tokens.size();
+    const int argc = m_argv_tokens.size();
 
     for (size_t i = 0, n = argc; i < n; ++i) {
         int next_i = i + 1;
@@ -243,26 +243,26 @@ Parser::exec(const string& argv)
         if (error())
             break;
 
-        arg = getArgument(_argv_tokens[i]);
+        arg = getArgument(m_argv_tokens[i]);
         if (arg.isValidArg()) {
 
             // Arguments can be created with default long and short names.
             // These defaults signify an empty flag option.
             // If a user knows the default and tries to use the empty arg name, ignore it.
-            if (arg.matchesDefaultFlag(_argv_tokens[i])) {
-                setErrorMsg("error: Unrecognized command-line option: " + _argv_tokens[i]);
+            if (arg.matchesDefaultFlag(m_argv_tokens[i])) {
+                setErrorMsg("error: Unrecognized command-line option: " + m_argv_tokens[i]);
                 break;
             }
 
             // Optional and Required flags specify how many params they need and their type.
             const size_t num_params = arg.getNumParams();
-            const Argument_t value_type = arg.getValueType();
-            const bool arg_is_string_type = (value_type == STRING_t);
-            const bool arg_is_file_type = (value_type == FILE_t);
-            const bool arg_is_bool_type = (value_type == BOOLEAN_t);
-            const bool arg_is_int_type = (value_type == INTEGER_t);
-            const bool arg_is_float_type = (value_type == FLOAT_t);
-            const bool arg_is_double_type = (value_type == DOUBLE_t);
+            const ArgumentType value_type = arg.getValueType();
+            const bool arg_is_string_type = (value_type == STRING_TYPE);
+            const bool arg_is_file_type = (value_type == FILE_TYPE);
+            const bool arg_is_bool_type = (value_type == BOOLEAN_TYPE);
+            const bool arg_is_int_type = (value_type == INTEGER_TYPE);
+            const bool arg_is_float_type = (value_type == FLOAT_TYPE);
+            const bool arg_is_double_type = (value_type == DOUBLE_TYPE);
 
             if (arg.isXSwitch()) {
                 // Only handle the first exclusive switch, then return.
@@ -279,12 +279,12 @@ Parser::exec(const string& argv)
                     continue;
                 } else if ((num_params == 1) && has_next_i) {
                     // The value of the switch is defined by the next parameter.
-                    const auto result = getBoolean(_argv_tokens[next_i]);
+                    const auto result = getBoolean(m_argv_tokens[next_i]);
                     if (result.first)
                         // If a boolean was found, assign the value.
                         results.push_back(make_pair(arg.getID(), result.second));
                     else
-                        setErrorMsg("error: Invalid boolean: " + _argv_tokens[next_i]);
+                        setErrorMsg("error: Invalid boolean: " + m_argv_tokens[next_i]);
                     i = next_i;
                     continue;
                 }
@@ -294,38 +294,38 @@ Parser::exec(const string& argv)
 
                     // Verify the type and add to the results.
                     if (arg_is_string_type) {
-                        const string param_value = _argv_tokens[next_i];
+                        const string param_value = m_argv_tokens[next_i];
                         results.push_back(make_pair(arg.getID(), param_value));
                     } else if (arg_is_file_type) {
-                        const char* param_cstr_value = _argv_tokens[next_i].c_str();
+                        const char* param_cstr_value = m_argv_tokens[next_i].c_str();
                         if (fileExists(param_cstr_value))
                             results.push_back(make_pair(arg.getID(), param_cstr_value));
                         else
-                            setErrorMsg("error: File not found: " + _argv_tokens[next_i]);
+                            setErrorMsg("error: File not found: " + m_argv_tokens[next_i]);
                     } else if (arg_is_bool_type) {
-                        const auto result = getBoolean(_argv_tokens[next_i]);
+                        const auto result = getBoolean(m_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid boolean: " + _argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid boolean: " + m_argv_tokens[next_i]);
                     } else if (arg_is_int_type) {
-                        const auto result = getInteger(_argv_tokens[next_i]);
+                        const auto result = getInteger(m_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid integer: " + _argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid integer: " + m_argv_tokens[next_i]);
                     } else if (arg_is_float_type) {
-                        const auto result = getFloat(_argv_tokens[next_i]);
+                        const auto result = getFloat(m_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid float: " + _argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid float: " + m_argv_tokens[next_i]);
                     } else if (arg_is_double_type) {
-                        const auto result = getDouble(_argv_tokens[next_i]);
+                        const auto result = getDouble(m_argv_tokens[next_i]);
                         if (result.first)
                             results.push_back(make_pair(arg.getID(), result.second));
                         else
-                            setErrorMsg("error: Invalid double: " + _argv_tokens[next_i]);
+                            setErrorMsg("error: Invalid double: " + m_argv_tokens[next_i]);
                     }
 
                     if (!error()) {
@@ -334,7 +334,7 @@ Parser::exec(const string& argv)
                         if (arg.isRequired() && arg_was_added) {
                             // After seeing and adding the required arg, remove it from the list.
                             // Later we will know if all required args were used if this list is empty.
-                            _required_args[arg.getID()] = false;
+                            m_required_args[arg.getID()] = false;
                         }
                     }
 
@@ -343,7 +343,7 @@ Parser::exec(const string& argv)
                 } else if ((num_params > 1) && has_next_i) {
                     const int results_before_size = results.size();
 
-                    Util::StringList_t str_results(num_params);
+                    Util::StringList str_results(num_params);
                     int idx = 0;
                     // Verify type but pack each into a space separated string.
                     for (size_t j = next_i, m = next_i + num_params; j < m; ++j, ++i, ++next_i) {
@@ -352,26 +352,26 @@ Parser::exec(const string& argv)
 
                         if (arg_is_bool_type) {
                             value_type_str = "boolean";
-                            const auto result = getBoolean(_argv_tokens[j]);
+                            const auto result = getBoolean(m_argv_tokens[j]);
                             result_ok = result.first;
                         } else if (arg_is_int_type) {
                             value_type_str = "int";
-                            const auto result = getInteger(_argv_tokens[j]);
+                            const auto result = getInteger(m_argv_tokens[j]);
                             result_ok = result.first;
                         } else if (arg_is_float_type) {
                             value_type_str = "float";
-                            const auto result = getFloat(_argv_tokens[j]);
+                            const auto result = getFloat(m_argv_tokens[j]);
                             result_ok = result.first;
                         } else if (arg_is_double_type) {
                             value_type_str = "double";
-                            const auto result = getDouble(_argv_tokens[j]);
+                            const auto result = getDouble(m_argv_tokens[j]);
                             result_ok = result.first;
                         }
 
                         if (result_ok) {
-                            str_results[idx++] = _argv_tokens[j];
+                            str_results[idx++] = m_argv_tokens[j];
                         } else {
-                            setErrorMsg("error: Invalid " + value_type_str + ": " + _argv_tokens[j]);
+                            setErrorMsg("error: Invalid " + value_type_str + ": " + m_argv_tokens[j]);
                             break;
                         }
                     }
@@ -384,13 +384,13 @@ Parser::exec(const string& argv)
                         if (arg.isRequired() && arg_was_added) {
                             // After seeing and adding the required arg, remove it from the list.
                             // Later we will know if all required args were used if this list is empty.
-                            _required_args[arg.getID()] = false;
+                            m_required_args[arg.getID()] = false;
                         }
                     }
                 }
             }
         } else {
-            setErrorMsg("error: Unrecognized command-line option: " + _argv_tokens[i]);
+            setErrorMsg("error: Unrecognized command-line option: " + m_argv_tokens[i]);
             break;
         }
     }
@@ -405,52 +405,52 @@ Parser::exec(const string& argv)
 bool
 Parser::error() const
 {
-    return !_error_msg.empty();
+    return !m_error_msg.empty();
 }
 
 std::string
 Parser::getErrorMsg() const
 {
-    return _error_msg;
+    return m_error_msg;
 }
 
 void
 Parser::resetMissingArgs()
 {
-    for (auto& [arg_id, arg_missing] : _required_args)
+    for (auto& [arg_id, arg_missing] : m_required_args)
         arg_missing = true;
 }
 
 void
 Parser::clearError()
 {
-    _error_msg.clear();
+    m_error_msg.clear();
 }
 
 void
-Parser::setErrorMsg(const std::string& value)
+Parser::setErrorMsg(const std::string& p_value)
 {
-    _error_msg = value;
+    m_error_msg = p_value;
 }
 
 bool
 Parser::isMissingRequiredArgs() const
 {
     bool missing = false;
-    for (auto const& [arg_ID, arg_missing] : _required_args)
+    for (auto const& [arg_ID, arg_missing] : m_required_args)
         missing |= arg_missing;
 
     return missing;
 }
 
 bool
-Parser::hasArgvToken(int arg_ID) const
+Parser::hasArgvToken(int p_arg_ID) const
 {
-    const Argument arg = getArgument(arg_ID);
-    if (Util::contains(_argv_tokens, arg.getShortFlag()))
+    const Argument arg = getArgument(p_arg_ID);
+    if (Util::contains(m_argv_tokens, arg.getShortFlag()))
         return true;
 
-    if (Util::contains(_argv_tokens, arg.getLongFlag()))
+    if (Util::contains(m_argv_tokens, arg.getLongFlag()))
         return true;
 
     return false;

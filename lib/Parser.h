@@ -42,38 +42,38 @@ class Parser
     Parser() = default;
     ~Parser() = default;
 
-    Argument* addArgument(const Argument& arg);
-    Argument& getArgument(int arg_ID);
-    const Argument& getArgument(int arg_ID) const;
-    Argument& getArgument(const std::string& flag);
+    Argument* addArgument(const Argument& p_arg);
+    Argument& getArgument(int p_arg_ID);
+    const Argument& getArgument(int p_arg_ID) const;
+    Argument& getArgument(const std::string& p_flag);
     const ArgumentList_t& getArguments() const;
 
-    ParsedArguments_t exec(int argc, char* argv[]);
-    ParsedArguments_t exec(const std::string& argv);
+    ParsedArguments_t exec(int p_argc, char* p_argv[]);
+    ParsedArguments_t exec(const std::string& p_argv);
     bool error() const;
     std::string getErrorMsg() const;
     bool isMissingRequiredArgs() const;
 
-    bool hasArgvToken(int arg_ID) const;
+    bool hasArgvToken(int p_arg_ID) const;
 
   private:
-    ValidBool_t getBoolean(const std::string& value) const;
-    ValidInt_t getInteger(const std::string& value) const;
-    ValidFloat_t getFloat(const std::string& value) const;
-    ValidDouble_t getDouble(const std::string& value) const;
+    ValidBool_t getBoolean(const std::string& p_value) const;
+    ValidInt_t getInteger(const std::string& p_value) const;
+    ValidFloat_t getFloat(const std::string& p_value) const;
+    ValidDouble_t getDouble(const std::string& p_value) const;
 
-    bool fileExists(const char* file_path) const;
+    bool fileExists(const char* p_file_path) const;
 
     void resetMissingArgs();
 
     void clearError();
-    void setErrorMsg(const std::string& value);
+    void setErrorMsg(const std::string& p_value);
 
   private:
-    ArgumentList_t _args;
-    std::map<int, bool> _required_args;
-    Util::StringList_t _argv_tokens;
-    std::string _error_msg;
+    ArgumentList_t m_args;
+    std::map<int, bool> m_required_args;
+    Util::StringList m_argv_tokens;
+    std::string m_error_msg;
 };
 
 } // namespace AbeArgs

@@ -29,7 +29,7 @@ namespace AbeArgs {
 typedef std::variant<bool, int, float, double, std::string> VarValue_t;
 
 /// @brief Command line argument type info.
-enum Argument_t : int
+enum ArgumentType : int
 {
     /// @brief Default behavior
     NO_ARG = 0,
@@ -51,21 +51,21 @@ enum Argument_t : int
     ///        may further process other flags.
     // SUBCOMMAND,
     /// @brief A default value type.
-    DEFAULT_VALUE_t,
+    DEFAULT_VALUE_TYPE,
     /// @brief No value for exclusive switch flags.
-    NO_VALUE_t,
+    NO_VALUE_TYPE,
     /// @brief A string argument type.
-    STRING_t,
+    STRING_TYPE,
     /// @brief A boolean argument type.
-    BOOLEAN_t,
+    BOOLEAN_TYPE,
     /// @brief An integer argument type.
-    INTEGER_t,
+    INTEGER_TYPE,
     /// @brief A float argument type.
-    FLOAT_t,
+    FLOAT_TYPE,
     /// @brief A double argument type.
-    DOUBLE_t,
+    DOUBLE_TYPE,
     /// @brief A filename represented by a string type.
-    FILE_t,
+    FILE_TYPE,
     /// @brief TODO: An IP address type.
     // IPADDR_TYPE,
 };
@@ -74,47 +74,47 @@ class Argument
 {
   public:
     Argument();
-    Argument(Argument_t arg_class,
-             int arg_ID,
-             const std::string& short_flag_name = DEFAULT_SHORT_FLAG_NAME,
-             const std::string& long_flag_name = DEFAULT_LONG_FLAG_NAME,
-             const std::string& description = DEFAULT_FLAG_DESC,
-             Argument_t value_type = Argument_t::DEFAULT_VALUE_t,
-             size_t num_params = DEFAULT_NUM_FLAG_PARAMS);
-    Argument(const Argument& rhs) = default; // Copy constructor
-    Argument(Argument&& rhs) = default;      // Move constructor
+    Argument(ArgumentType p_arg_class,
+             int p_arg_ID,
+             const std::string& p_short_flag_name = DEFAULT_SHORT_FLAG_NAME,
+             const std::string& p_long_flag_name = DEFAULT_LONG_FLAG_NAME,
+             const std::string& p_description = DEFAULT_FLAG_DESC,
+             ArgumentType p_value_type = ArgumentType::DEFAULT_VALUE_TYPE,
+             size_t p_num_params = DEFAULT_NUM_FLAG_PARAMS);
+    Argument(const Argument& p_rhs) = default; // Copy constructor
+    Argument(Argument&& p_rhs) = default;      // Move constructor
     ~Argument() = default;
 
   public:
-    Argument& operator=(const Argument& rhs) = default;
+    Argument& operator=(const Argument& p_rhs) = default;
 
-    int getID() const { return _arg_ID; }
-    Argument_t getClass() const { return _class; }
-    Argument_t getValueType() const { return _value_type; }
+    int getID() const { return m_arg_ID; }
+    ArgumentType getClass() const { return m_class; }
+    ArgumentType getValueType() const { return m_value_type; }
 
-    VarValue_t getDefaultValue() const { return _default_value; }
+    VarValue_t getDefaultValue() const { return m_default_value; }
     std::string getDefaultValueToString() const;
-    Argument& setDefaultValue(VarValue_t value);
-    bool hasDefaultValue() const { return _has_default_value; }
+    Argument& setDefaultValue(VarValue_t p_value);
+    bool hasDefaultValue() const { return m_has_default_value; }
 
-    bool isValidArg() const { return NO_ARG != _class; }
-    bool isXSwitch() const { return X_SWITCH == _class; }
-    bool isSwitch() const { return SWITCH == _class; }
-    bool isOptional() const { return OPTIONAL == _class; }
-    bool isRequired() const { return REQUIRED == _class; }
+    bool isValidArg() const { return NO_ARG != m_class; }
+    bool isXSwitch() const { return X_SWITCH == m_class; }
+    bool isSwitch() const { return SWITCH == m_class; }
+    bool isOptional() const { return OPTIONAL == m_class; }
+    bool isRequired() const { return REQUIRED == m_class; }
 
-    size_t getNumParams() const { return _num_params; }
+    size_t getNumParams() const { return m_num_params; }
 
-    void setFlagType(Argument_t flag_type);
+    void setFlagType(ArgumentType flag_type);
 
-    std::string getLongFlagChars() const { return _long_flag_chars; }
-    std::string getShortFlagChars() const { return _short_flag_chars; }
+    std::string getLongFlagChars() const { return m_long_flag_chars; }
+    std::string getShortFlagChars() const { return m_short_flag_chars; }
 
     std::string getShortFlag() const;
     std::string getLongFlag() const;
 
-    bool matchesDefaultFlag(const std::string& value) const;
-    bool matchesFlag(const std::string& value) const;
+    bool matchesDefaultFlag(const std::string& p_value) const;
+    bool matchesFlag(const std::string& p_value) const;
 
     std::string toString() const;
 
@@ -123,31 +123,31 @@ class Argument
 
   private:
     /// @brief The identifier for the argument.
-    int _arg_ID = NO_ARG;
+    int m_arg_ID = NO_ARG;
 
     /// @brief Whether this is a switch, optional, or required class of argument.
-    Argument_t _class = NO_ARG;
+    ArgumentType m_class = NO_ARG;
 
-    std::string _short_flag_name = DEFAULT_SHORT_FLAG_NAME;
-    std::string _long_flag_name = DEFAULT_LONG_FLAG_NAME;
-    std::string _description = DEFAULT_FLAG_DESC;
+    std::string m_short_flag_name = DEFAULT_SHORT_FLAG_NAME;
+    std::string m_long_flag_name = DEFAULT_LONG_FLAG_NAME;
+    std::string m_description = DEFAULT_FLAG_DESC;
 
     /// @brief The argument's value type (boolean, integer, double, string, filename).
-    Argument_t _value_type = DEFAULT_VALUE_t;
+    ArgumentType m_value_type = DEFAULT_VALUE_TYPE;
 
-    bool _has_default_value = false;
-    VarValue_t _default_value{ false };
+    bool m_has_default_value = false;
+    VarValue_t m_default_value{ false };
 
-    Argument_t _flag_type = DASH_FLAG;
+    ArgumentType m_flag_type = DASH_FLAG;
 
     /// @brief The default way to signify a short flag is with a dash.
-    std::string _short_flag_chars = DEFAULT_SHORT_DASH_CHARS;
+    std::string m_short_flag_chars = DEFAULT_SHORT_DASH_CHARS;
 
     /// @brief The default way to signify a long flag is with dashes.
-    std::string _long_flag_chars = DEFAULT_LONG_DASH_CHARS;
+    std::string m_long_flag_chars = DEFAULT_LONG_DASH_CHARS;
 
     /// @brief The number of params (0 or 1 for switch, 1 for optional and required).
-    size_t _num_params = DEFAULT_NUM_FLAG_PARAMS;
+    size_t m_num_params = DEFAULT_NUM_FLAG_PARAMS;
 };
 
 } // namespace AbeArgs
