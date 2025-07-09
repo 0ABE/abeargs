@@ -17,6 +17,11 @@
 
 #pragma once
 
+// Project includes
+#ifdef _MSC_VER
+#include "MSVC.h"
+#endif
+
 // Standard includes
 #include <algorithm>
 #include <cstring>
@@ -72,7 +77,7 @@ class Util
         std::string result = {};
         result.reserve(result_len);
 
-        for (int i = 0, n = p_tokens.size(); i < n; ++i) {
+        for (size_t i = 0, n = p_tokens.size(); i < n; ++i) {
             result += p_tokens[i];
             if (i < n - 1)
                 result += p_separator;
@@ -149,20 +154,20 @@ class Util
         const int num_pairs = p_pairs_len / 2;
 
         // Split the pairs into openers and closers.
-        char openers[num_pairs];
-        char closers[num_pairs];
+        std::vector<char> openers_vec(num_pairs);
+        std::vector<char> closers_vec(num_pairs);
         for (int i = 0, j = 0; i < num_pairs; ++i, j += 2) {
-            openers[i] = p_pairs[j];
-            closers[i] = p_pairs[j + 1];
+            openers_vec[i] = p_pairs[j];
+            closers_vec[i] = p_pairs[j + 1];
         }
 
         int count = 0;
         bool open = false;
         int which_pair = -1;
         for (auto& c : p_str) {
-            if (!open && arrayContains(openers, num_pairs, c, which_pair)) {
+            if (!open && arrayContains(openers_vec.data(), num_pairs, c, which_pair)) {
                 open = true;
-            } else if (open && which_pair > -1 && c == closers[which_pair]) {
+            } else if (open && which_pair > -1 && c == closers_vec[which_pair]) {
                 open = false;
                 which_pair = -1;
             }
@@ -188,7 +193,7 @@ class Util
     static bool endsWith(const std::string& p_str, char p_c)
     {
         if (!p_str.empty()) {
-            const int len = p_str.length();
+            const size_t len = p_str.length();
             return (p_str[len - 1] == p_c);
         }
         // str is empty and doesn't end with char c.

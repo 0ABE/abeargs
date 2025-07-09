@@ -19,7 +19,7 @@
 
 namespace AbeArgs {
 
-static int s_longest_long_name = 0;
+static size_t s_longest_long_name = 0;
 
 Argument::Argument() = default;
 
@@ -55,7 +55,7 @@ Argument::getDefaultValueToString() const
 {
     using namespace std;
 
-    const int index = m_default_value.index();
+    const size_t index = m_default_value.index();
     string result = {};
     if (index == 0)
         result = (get<bool>(m_default_value) ? "true" : "false");
@@ -143,7 +143,7 @@ Argument::toString() const
     }
 
     const std::string column_space = "   ";
-    const int space_diff = s_longest_long_name - long_flag_name.length();
+    const size_t space_diff = s_longest_long_name - long_flag_name.length();
 
     std::string spaces = column_space;
     for (int i = 0; i < space_diff; ++i)
@@ -151,7 +151,7 @@ Argument::toString() const
 
     const std::string flags = m_short_flag_chars + m_short_flag_name + column_space +
                               long_flag_chars + long_flag_name + spaces;
-    const int flags_len = flags.length();
+    const size_t flags_len = flags.length();
     std::string flags_space{};
     for (int i = 0; i < flags_len; ++i)
         flags_space += " ";

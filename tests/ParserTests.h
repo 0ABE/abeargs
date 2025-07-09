@@ -18,8 +18,8 @@
 #pragma once
 
 // CppUnit includes
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
+#include "cppunit/TestFixture.h"
+#include "cppunit/extensions/HelperMacros.h"
 
 class ParserTests : public CppUnit::TestFixture
 {

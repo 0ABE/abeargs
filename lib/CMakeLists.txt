@@ -26,6 +26,12 @@ list(APPEND ABEARGS_SRC_CODE
     "Util.h"
 )
 
+if(MSVC)
+list(APPEND ABEARGS_SRC_CODE
+    "MSVC.h"
+)
+endif()
+
 # ---- Shared or static libraries --------------------
 # add_library(AbeArgs SHARED ${ABEARGS_SRC_CODE})
 add_library(AbeArgs STATIC ${ABEARGS_SRC_CODE})

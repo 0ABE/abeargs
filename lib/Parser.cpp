@@ -21,6 +21,9 @@
 #include "Argument.h"
 #include "Math.h"
 #include "Util.h"
+#ifdef _MSC_VER
+#include "MSVC.h"
+#endif
 
 // Standard includes
 #include <iostream>
@@ -129,7 +132,7 @@ Parser::getInteger(const string& p_value) const
 #endif
             return make_pair(false, 0);
         }
-    } catch (const invalid_argument& inv_arg) {
+    } catch (const invalid_argument&) {
 #ifdef DEBUG_BUILD
         std::cerr << "error[i1]: Invalid integer: " << p_value << '\n';
 #endif
@@ -142,11 +145,11 @@ ValidFloat_t
 Parser::getFloat(const string& p_value) const
 {
     // Convert to a float value.
-    const float f1_value = strtod(p_value.c_str(), nullptr);
+    const float f1_value = strtof(p_value.c_str(), nullptr);
     // Convert the float back to a string value.
     const string str_value = to_string(f1_value);
     // Convert to a float (again).
-    const float f2_value = strtod(str_value.c_str(), nullptr);
+    const float f2_value = strtof(str_value.c_str(), nullptr);
     // Compare the strings to see if they are the same.
     if (Math::isEqual(f1_value, f2_value))
         // They are the same. It worked.
@@ -157,7 +160,7 @@ Parser::getFloat(const string& p_value) const
 #endif
 
     // Don't return a float.
-    return make_pair(false, 0);
+    return make_pair(false, 0.f);
 }
 
 ValidDouble_t
@@ -234,10 +237,10 @@ Parser::exec(const string& p_argv)
     for (size_t i = 0; i < pairs_len; i = i + 2)
         m_argv_tokens = Util::joinDelimitedTokens(m_argv_tokens, pairs[i], pairs[i + 1], space_char);
     // Get the new number of arguments.
-    const int argc = m_argv_tokens.size();
+    const size_t argc = m_argv_tokens.size();
 
     for (size_t i = 0, n = argc; i < n; ++i) {
-        int next_i = i + 1;
+        size_t next_i = i + 1;
         const bool has_next_i = (next_i < n);
 
         if (error())
@@ -290,7 +293,7 @@ Parser::exec(const string& p_argv)
                 }
             } else if (arg.isOptional() || arg.isRequired()) {
                 if ((num_params == 1) && has_next_i) {
-                    const int results_before_size = results.size();
+                    const size_t results_before_size = results.size();
 
                     // Verify the type and add to the results.
                     if (arg_is_string_type) {
@@ -341,7 +344,7 @@ Parser::exec(const string& p_argv)
                     i = next_i;
                     continue;
                 } else if ((num_params > 1) && has_next_i) {
-                    const int results_before_size = results.size();
+                    const size_t results_before_size = results.size();
 
                     Util::StringList str_results(num_params);
                     int idx = 0;

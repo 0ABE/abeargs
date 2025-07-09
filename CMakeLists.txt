@@ -15,7 +15,7 @@
 # as shown at https://oss.oracle.com/licenses/upl/.              
 # 
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
 # ---- Enable C++20 ----------------------------------
@@ -25,30 +25,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
 
-project(AbeArgs VERSION 0.1.250611)
+project("AbeArgs" VERSION 0.1.250708)
+
+# ---- Choose a build type ---------------------------
+# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: Release" FORCE)
+# ----------------------------------------------------
 
 # Define the library target.
 add_subdirectory(lib)
 
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    option(BUILD_TESTS "whether or not to build tests" ON)
-    if(BUILD_TESTS)
-        enable_testing()
-        add_subdirectory(tests)
-    endif()
+# Build tests only if the build type is Debug.
+# This allows for faster builds in Release mode. 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Building in Debug mode")
+    add_compile_definitions(DEBUG_BUILD)
+    enable_testing()
+    add_subdirectory(tests)
+else()
+    message(STATUS "Building in Release mode")
+    add_compile_definitions(RELEASE_BUILD)
 endif()
-
-# ---- Choose a build type ---------------------------
-#
-# NOTE: To set a build type using CMake Tools (VSCode
-# extension), comment these lines. If not using CMake
-# Tools, uncomment the following to set a build type.
-# 
-# * * Don't forget the #define for Debug builds. * * *
-#
-# ---- Debug (with a #define DEBUG_BUILD) ------------
-# set(CMAKE_BUILD_TYPE Debug)
-# add_compile_definitions(DEBUG_BUILD)
-# ---- Release ---------------------------------------
-set(CMAKE_BUILD_TYPE Release)
-# ----------------------------------------------------

@@ -22,11 +22,36 @@ list(APPEND ABEARGSTESTS_SRC_CODE
   "main.cpp"
 )
 
+# Unpack thirdparty libraries.
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  # CppUnit
+  file(ARCHIVE_EXTRACT
+       INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip"
+       DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/_deps/")
+  set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build/_deps/cppunit-1.15.1")
+  set(CPPUNIT_LIB_DIR "${CPPUNIT_DIR}/lib")
+  set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
+  if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CPPUNIT_LIBRARY "${CPPUNIT_LIB_DIR}/cppunit.lib")
+  else()
+    set(CPPUNIT_LIBRARY "${CPPUNIT_LIB_DIR}/cppunitd.lib")
+  endif()
+endif()
+
 # Path to the AbeArgs library.
-link_directories(../build/lib)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(ABEARGS_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/../build/lib/Release")
+else()
+  set(ABEARGS_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/../build/lib/Debug")
+endif()
 
 # Add source code to this project's executable.
 add_executable(AbeArgsTests ${ABEARGSTESTS_SRC_CODE})
 
+
+target_include_directories(AbeArgsTests PRIVATE
+                            ${CPPUNIT_INCLUDE_DIR})
+
 # Link the following libraries into the executable.
-target_link_libraries(AbeArgsTests libAbeArgs.a libcppunit.a)
+target_link_libraries(AbeArgsTests PRIVATE
+                      AbeArgs ${CPPUNIT_LIBRARY})

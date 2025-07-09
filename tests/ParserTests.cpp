@@ -475,7 +475,7 @@ ParserTests::testDefaultValues1()
 
     cout << "\n-----\n";
     ArgumentList_t list = parser.getArguments();
-    for (int i = 0, n = list.size(); i < n; ++i) {
+    for (size_t i = 0, n = list.size(); i < n; ++i) {
         cout << list[i].toString() << '\n';
         if (i < n - 1)
             cout << '\n';
