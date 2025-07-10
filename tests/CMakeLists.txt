@@ -26,7 +26,19 @@ list(APPEND ABEARGSTESTS_SRC_CODE
 )
 
 # Unpack thirdparty libraries.
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  # CppUnit
+  file(ARCHIVE_EXTRACT
+       INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz"
+       DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/")
+  set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
+  set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
+  # AbeArgsTests is only built in Debug mode, so include the Debug libraries.
+  # CppUnit library
+  set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/lib/libcppunit.a")
+  # AbeArgs library
+  set(ABEARGS_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/../build/lib/libAbeArgsd.a")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
   # CppUnit
   file(ARCHIVE_EXTRACT
        INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip"
@@ -47,4 +59,5 @@ add_executable(${ABEARGSTESTS_NAME} ${ABEARGSTESTS_SRC_CODE})
 target_include_directories(${ABEARGSTESTS_NAME} PRIVATE ${CPPUNIT_INCLUDE_DIR})
 
 # Link the following libraries into the executable.
-target_link_libraries(${ABEARGSTESTS_NAME} PRIVATE ${ABEARGS_LIBRARY} ${CPPUNIT_LIBRARY})
+# Referencing the AbeArgs library here creates a dependency and builds it first.
+target_link_libraries(${ABEARGSTESTS_NAME} PRIVATE AbeArgs ${CPPUNIT_LIBRARY})
