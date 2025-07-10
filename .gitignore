@@ -17,6 +17,7 @@
 
 # Directories
 build/
+build_deps/
 out/
 release/
 

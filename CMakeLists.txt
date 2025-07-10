@@ -18,6 +18,8 @@
 cmake_minimum_required(VERSION 3.10)
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
+project("AbeArgs" VERSION 0.1.250709)
+
 # ---- Enable C++20 ----------------------------------
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,24 +27,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
 
-project("AbeArgs" VERSION 0.1.250708)
-
-# ---- Choose a build type ---------------------------
-# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
+# Choose the build type.
+# Default to Release if not specified.
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: Release" FORCE)
-# ----------------------------------------------------
+# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
 
-# Define the library target.
-add_subdirectory(lib)
-
-# Build tests only if the build type is Debug.
-# This allows for faster builds in Release mode. 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Building in Debug mode")
     add_compile_definitions(DEBUG_BUILD)
-    enable_testing()
+    # Build tests only if the build type is Debug.
     add_subdirectory(tests)
 else()
     message(STATUS "Building in Release mode")
     add_compile_definitions(RELEASE_BUILD)
 endif()
+
+# Define the AbeArgs library target.
+add_subdirectory(lib)
