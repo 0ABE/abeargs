@@ -32,6 +32,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: Release" FORCE)
 # set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
 
+# Add compile definitions based on the build type.
+# This will allow us to conditionally compile code based on the build type.
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Building in Debug mode")
     add_compile_definitions(DEBUG_BUILD)
