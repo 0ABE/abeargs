@@ -19,12 +19,12 @@
 
 namespace AbeArgs {
 
-class Math
+class AbeMath
 {
 
   public:
-    Math() = delete;
-    ~Math() = delete;
+    AbeMath() = delete;
+    ~AbeMath() = delete;
 
     /**
      * @brief Test if 2 numbers are equal within an epsilon amount.

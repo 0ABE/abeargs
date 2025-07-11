@@ -18,8 +18,8 @@
 #include "Parser.h"
 
 // Project includes
+#include "AbeMath.h"
 #include "Argument.h"
-#include "Math.h"
 #include "Util.h"
 #ifdef _MSC_VER
 #include "MSVC.h"
@@ -151,7 +151,7 @@ Parser::getFloat(const string& p_value) const
     // Convert to a float (again).
     const float f2_value = strtof(str_value.c_str(), nullptr);
     // Compare the strings to see if they are the same.
-    if (Math::isEqual(f1_value, f2_value))
+    if (AbeMath::isEqual(f1_value, f2_value))
         // They are the same. It worked.
         return make_pair(true, f1_value);
 
@@ -173,7 +173,7 @@ Parser::getDouble(const string& p_value) const
     // Convert to a double value (again).
     const double d2_value = strtod(str_value.c_str(), nullptr);
     // Compare the converted values to see if they are the same.
-    if (Math::isEqual(d1_value, d2_value))
+    if (AbeMath::isEqual(d1_value, d2_value))
         // They are the same. It worked.
         return make_pair(true, d1_value);
 

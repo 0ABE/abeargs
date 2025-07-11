@@ -28,7 +28,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
 
 # Choose the build type.
-# Default to Release if not specified.
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: Release" FORCE)
 # set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
 

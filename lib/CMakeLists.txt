@@ -17,10 +17,10 @@
 
 # ---- Source code defined  --------------------------
 list(APPEND ABEARGS_SRC_CODE
+    "AbeMath.h"
     "Argument.cpp"
     "Argument.h"
     "Defaults.h"
-    "Math.h"
     "Parser.cpp"
     "Parser.h"
     "Util.h"
