@@ -19,6 +19,16 @@
 #include "cppunit/extensions/TestFactoryRegistry.h"
 #include "cppunit/ui/text/TestRunner.h"
 
+/**
+ * @brief Entry point for the test runner application.
+ *
+ * Initializes the CppUnit test runner, registers all tests from the test registry,
+ * sets the output format to compiler style, and executes the tests.
+ *
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line argument strings.
+ * @return int Returns 0 if all tests pass, otherwise returns 1.
+ */
 int
 main(int argc, char* argv[])
 {

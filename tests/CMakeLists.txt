@@ -26,7 +26,19 @@ list(APPEND ABEARGSTESTS_SRC_CODE
 )
 
 # Unpack thirdparty libraries.
-if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+  # CppUnit
+  file(ARCHIVE_EXTRACT
+       INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/macOS/cppunit-1.15.1.zip"
+       DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/")
+  set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
+  set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
+  # AbeArgsTests is only built in Debug mode, so include the Debug libraries.
+  # CppUnit library
+  set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/lib/Debug/libcppunit.a")
+  # AbeArgs library
+  set(ABEARGS_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/../build/lib/libAbeArgsd.a")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
   # CppUnit
   file(ARCHIVE_EXTRACT
        INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz"
