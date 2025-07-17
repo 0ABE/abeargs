@@ -25,44 +25,30 @@ list(APPEND ABEARGSTESTS_SRC_CODE
   "main.cpp"
 )
 
-# Unpack thirdparty libraries.
+# AbeArgsTests is only built in Debug mode, so include the AbeArgs Debug libraries.
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-  # CppUnit
-  file(ARCHIVE_EXTRACT
-       INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/macOS/cppunit-1.15.1.zip"
-       DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/")
-  set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
-  set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
-  # AbeArgsTests is only built in Debug mode, so include the Debug libraries.
-  # CppUnit library
-  set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/lib/Debug/libcppunit.a")
-  # AbeArgs library
-  set(ABEARGS_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/../build/lib/libAbeArgsd.a")
+  set(CPPUNIT_ARCHIVE "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/macOS/cppunit-1.15.1.zip")
+  set(CPPUNIT_LIBRARY_PATH "lib/Debug/libcppunit.a")
+  set(ABEARGS_LIBRARY_PATH "../build/lib/libAbeArgsd.a")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  # CppUnit
-  file(ARCHIVE_EXTRACT
-       INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz"
-       DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/")
-  set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
-  set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
-  # AbeArgsTests is only built in Debug mode, so include the Debug libraries.
-  # CppUnit library
-  set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/lib/libcppunit.a")
-  # AbeArgs library
-  set(ABEARGS_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/../build/lib/libAbeArgsd.a")
+  set(CPPUNIT_ARCHIVE "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz")
+  set(CPPUNIT_LIBRARY_PATH "lib/libcppunit.a")
+  set(ABEARGS_LIBRARY_PATH "../build/lib/libAbeArgsd.a")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  # CppUnit
-  file(ARCHIVE_EXTRACT
-       INPUT "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip"
-       DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/")
-  set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
-  set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
-  # AbeArgsTests is only built in Debug mode, so include the Debug libraries.
-  # CppUnit library
-  set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/lib/cppunitd.lib")
-  # AbeArgs library
-  set(ABEARGS_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/../build/lib/Debug/AbeArgsd.lib")
+  set(CPPUNIT_ARCHIVE "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip")
+  set(CPPUNIT_LIBRARY_PATH "lib/cppunitd.lib")
+  set(ABEARGS_LIBRARY_PATH "../build/lib/Debug/AbeArgsd.lib")
 endif()
+
+# Unpack thirdparty libraries.
+file(ARCHIVE_EXTRACT
+  INPUT "${CPPUNIT_ARCHIVE}"
+  DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/"
+)
+set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
+set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
+set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/${CPPUNIT_LIBRARY_PATH}")
+set(ABEARGS_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/${ABEARGS_LIBRARY_PATH}")
 
 # Add source code to this project's executable.
 add_executable(${ABEARGSTESTS_NAME} ${ABEARGSTESTS_SRC_CODE})
