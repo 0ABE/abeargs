@@ -43,6 +43,6 @@ set_target_properties(AbeArgs PROPERTIES OUTPUT_NAME_DEBUG "AbeArgsd"
                                          OUTPUT_NAME_RELEASE "AbeArgs")
 
 # Export the include dir.
-set(ABEARGS_INCLUDE_DIRS
+set(ABEARGS_INCLUDE_DIR
     ${CMAKE_CURRENT_LIST_DIR}
     CACHE PATH "AbeArgs include dir")
