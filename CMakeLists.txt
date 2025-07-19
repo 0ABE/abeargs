@@ -1,3 +1,4 @@
+# cmake-format: off
 # 
 #           d8888 888                     d8888                          
 #          d88888 888                    d88888                          
@@ -14,11 +15,12 @@
 # Licensed under the Universal Permissive License v 1.0
 # as shown at https://oss.oracle.com/licenses/upl/.              
 # 
+# cmake-format: on
 
 cmake_minimum_required(VERSION 3.10)
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
-project("AbeArgs" VERSION 0.1.250709)
+project("AbeArgs" VERSION 0.1.250719)
 
 # ---- Enable C++20 ----------------------------------
 set(CMAKE_CXX_STANDARD 20)
@@ -28,20 +30,22 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
 
 # Choose the build type.
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: Release" FORCE)
+set(CMAKE_BUILD_TYPE
+    "Release"
+    CACHE STRING "Build type: Release" FORCE)
 # set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
 
-# Add compile definitions based on the build type.
-# This will allow us to conditionally compile code based on the build type.
+# Add compile definitions based on the build type. This will allow us to
+# conditionally compile code based on the build type.
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message(STATUS "Building in Debug mode")
-    add_compile_definitions(DEBUG_BUILD)
-    # Build tests only if the build type is Debug.
-    add_subdirectory(tests)
+  message(STATUS "Building in Debug mode")
+  add_compile_definitions(DEBUG_BUILD)
+  # Build tests only if the build type is Debug.
+  add_subdirectory(abeargs_tests)
 else()
-    message(STATUS "Building in Release mode")
-    add_compile_definitions(RELEASE_BUILD)
+  message(STATUS "Building in Release mode")
+  add_compile_definitions(RELEASE_BUILD)
 endif()
 
 # Define the AbeArgs library target.
-add_subdirectory(lib)
+add_subdirectory(abeargs_lib)

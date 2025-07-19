@@ -18,7 +18,7 @@
 #include "ParserTests.h"
 
 // Project includes
-#include "../lib/abeargs.h"
+#include "../abeargs_lib/abeargs.h"
 
 // System includes
 #include <iostream>

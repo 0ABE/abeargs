@@ -1,3 +1,4 @@
+# cmake-format: off
 # 
 #           d8888 888                     d8888                          
 #          d88888 888                    d88888                          
@@ -14,37 +15,36 @@
 # Licensed under the Universal Permissive License v 1.0
 # as shown at https://oss.oracle.com/licenses/upl/.              
 # 
+# cmake-format: on
 
 # Set the test target name.
 set(ABEARGSTESTS_NAME "AbeArgsTests")
 
 # ---- Source code defined  --------------------------
-list(APPEND ABEARGSTESTS_SRC_CODE
-  "ParserTests.cpp"
-  "ParserTests.h"
-  "main.cpp"
-)
+list(APPEND ABEARGSTESTS_SRC_CODE "ParserTests.cpp" "ParserTests.h" "main.cpp")
 
-# AbeArgsTests is only built in Debug mode, so include the AbeArgs Debug libraries.
+# AbeArgsTests is only built in Debug mode, so include the AbeArgs Debug
+# libraries.
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-  set(CPPUNIT_ARCHIVE "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/macOS/cppunit-1.15.1.zip")
+  set(CPPUNIT_ARCHIVE
+      "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/macOS/cppunit-1.15.1.zip")
   set(CPPUNIT_LIBRARY_PATH "lib/Debug/libcppunit.a")
   set(ABEARGS_LIBRARY_PATH "../build/lib/libAbeArgsd.a")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  set(CPPUNIT_ARCHIVE "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz")
+  set(CPPUNIT_ARCHIVE
+      "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz")
   set(CPPUNIT_LIBRARY_PATH "lib/libcppunit.a")
   set(ABEARGS_LIBRARY_PATH "../build/lib/libAbeArgsd.a")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  set(CPPUNIT_ARCHIVE "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip")
+  set(CPPUNIT_ARCHIVE
+      "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip")
   set(CPPUNIT_LIBRARY_PATH "lib/cppunitd.lib")
   set(ABEARGS_LIBRARY_PATH "../build/lib/Debug/AbeArgsd.lib")
 endif()
 
 # Unpack thirdparty libraries.
-file(ARCHIVE_EXTRACT
-  INPUT "${CPPUNIT_ARCHIVE}"
-  DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build_deps/"
-)
+file(ARCHIVE_EXTRACT INPUT "${CPPUNIT_ARCHIVE}" DESTINATION
+     "${CMAKE_CURRENT_LIST_DIR}/build_deps/")
 set(CPPUNIT_DIR "${CMAKE_CURRENT_LIST_DIR}/build_deps/cppunit-1.15.1")
 set(CPPUNIT_INCLUDE_DIR "${CPPUNIT_DIR}/include")
 set(CPPUNIT_LIBRARY "${CPPUNIT_DIR}/${CPPUNIT_LIBRARY_PATH}")
@@ -56,6 +56,6 @@ add_executable(${ABEARGSTESTS_NAME} ${ABEARGSTESTS_SRC_CODE})
 # Add the include directories for the source code.
 target_include_directories(${ABEARGSTESTS_NAME} PRIVATE ${CPPUNIT_INCLUDE_DIR})
 
-# Link the following libraries into the executable.
-# Referencing the AbeArgs library here creates a dependency and builds it first.
+# Link the following libraries into the executable. Referencing the AbeArgs
+# library here creates a dependency and builds it first.
 target_link_libraries(${ABEARGSTESTS_NAME} PRIVATE AbeArgs ${CPPUNIT_LIBRARY})

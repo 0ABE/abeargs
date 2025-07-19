@@ -1,3 +1,4 @@
+# cmake-format: off
 # 
 #           d8888 888                     d8888                          
 #          d88888 888                    d88888                          
@@ -14,22 +15,22 @@
 # Licensed under the Universal Permissive License v 1.0
 # as shown at https://oss.oracle.com/licenses/upl/.              
 # 
+# cmake-format: on
 
 # ---- Source code defined  --------------------------
-list(APPEND ABEARGS_SRC_CODE
-    "AbeMath.h"
-    "Argument.cpp"
-    "Argument.h"
-    "Defaults.h"
-    "Parser.cpp"
-    "Parser.h"
-    "Util.h"
-)
+list(
+  APPEND
+  ABEARGS_SRC_CODE
+  "AbeMath.h"
+  "Argument.cpp"
+  "Argument.h"
+  "Defaults.h"
+  "Parser.cpp"
+  "Parser.h"
+  "Util.h")
 
 if(MSVC)
-list(APPEND ABEARGS_SRC_CODE
-    "MSVC.h"
-)
+  list(APPEND ABEARGS_SRC_CODE "MSVC.h")
 endif()
 
 # ---- Shared or static libraries --------------------
@@ -38,10 +39,10 @@ add_library(AbeArgs STATIC ${ABEARGS_SRC_CODE})
 # ----------------------------------------------------
 
 # Name the library target based on the build type.
-set_target_properties(AbeArgs PROPERTIES
-    OUTPUT_NAME_DEBUG "AbeArgsd"
-    OUTPUT_NAME_RELEASE "AbeArgs"
-)
+set_target_properties(AbeArgs PROPERTIES OUTPUT_NAME_DEBUG "AbeArgsd"
+                                         OUTPUT_NAME_RELEASE "AbeArgs")
 
 # Export the include dir.
-set(ABEARGS_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR} CACHE PATH "AbeArgs include dir")
+set(ABEARGS_INCLUDE_DIRS
+    ${CMAKE_CURRENT_LIST_DIR}
+    CACHE PATH "AbeArgs include dir")
