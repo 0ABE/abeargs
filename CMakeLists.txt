@@ -29,11 +29,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # ----------------------------------------------------
 
-# Choose the build type. set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build
-# type: Release" FORCE)
-set(CMAKE_BUILD_TYPE
-    "Debug"
-    CACHE STRING "Build type: Debug" FORCE)
+# cmake-format: off
+# Choose the build type.
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: Release" FORCE)
+# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type: Debug" FORCE)
+# cmake-format: on
 
 # Add compile definitions based on the build type. This will allow us to
 # conditionally compile code based on the build type.
