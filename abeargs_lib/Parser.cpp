@@ -33,7 +33,7 @@ using namespace std;
 
 namespace AbeArgs {
 
-static Argument s_no_arg;
+static Argument s_no_arg{};
 
 Argument*
 Parser::addArgument(const Argument& p_arg)

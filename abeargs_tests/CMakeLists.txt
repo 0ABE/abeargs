@@ -23,23 +23,71 @@ set(ABEARGSTESTS_NAME "AbeArgsTests")
 # ---- Source code defined  --------------------------
 list(APPEND ABEARGSTESTS_SRC_CODE "ParserTests.cpp" "ParserTests.h" "main.cpp")
 
+set(LINUX FALSE)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  set(LINUX TRUE)
+endif()
+
+set(CLANG_WINDOWS FALSE)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows" AND CMAKE_CXX_COMPILER_ID MATCHES
+                                           "Clang")
+  set(CLANG_WINDOWS TRUE)
+endif()
+
+set(GNU_WINDOWS FALSE)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows" AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  set(GNU_WINDOWS TRUE)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    message(STATUS "MinGW 32-bit Windows build detected.")
+    set(CPPUNIT_ARCHIVE_NAME "cppunit-1.15.1-mingw32.zip")
+  elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message(STATUS "UCRT 64-bit Windows build detected.")
+    set(CPPUNIT_ARCHIVE_NAME "cppunit-1.15.1-ucrt64.zip")
+  endif()
+endif()
+
+set(MSVC_WINDOWS FALSE)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows" AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  set(MSVC_WINDOWS TRUE)
+endif()
+
 # AbeArgsTests is only built in Debug mode, so include the AbeArgs Debug
 # libraries.
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   set(CPPUNIT_ARCHIVE
       "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/macOS/cppunit-1.15.1.zip")
   set(CPPUNIT_LIBRARY_PATH "lib/Debug/libcppunit.a")
-  set(ABEARGS_LIBRARY_PATH "../build/lib/libAbeArgsd.a")
-elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  set(ABEARGS_LIBRARY_PATH "../build/abeargs_lib/libAbeArgsd.a")
+endif()
+
+if(LINUX)
   set(CPPUNIT_ARCHIVE
       "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/linux/cppunit-1.15.1.tar.gz")
   set(CPPUNIT_LIBRARY_PATH "lib/libcppunit.a")
-  set(ABEARGS_LIBRARY_PATH "../build/lib/libAbeArgsd.a")
-elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  set(ABEARGS_LIBRARY_PATH "../build/abeargs_lib/libAbeArgsd.a")
+endif()
+
+# cmake-format: off
+# if(CLANG_WINDOWS)
+#   set(CPPUNIT_ARCHIVE
+#       "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1-clang.zip")
+#   set(CPPUNIT_LIBRARY_PATH "lib/libcppunit.a")
+#   set(ABEARGS_LIBRARY_PATH "../build/abeargs_lib/AbeArgsd.lib")
+# endif()
+# cmake-format: on
+
+if(GNU_WINDOWS)
   set(CPPUNIT_ARCHIVE
-      "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1.zip")
+      "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/${CPPUNIT_ARCHIVE_NAME}")
+  set(CPPUNIT_LIBRARY_PATH "lib/libcppunit.a")
+  set(ABEARGS_LIBRARY_PATH "../build/abeargs_lib/libAbeArgsd.a")
+endif()
+
+if(MSVC_WINDOWS)
+  set(CPPUNIT_ARCHIVE
+      "${CMAKE_CURRENT_LIST_DIR}/libs/thirdparty/win64/cppunit-1.15.1-VC.zip")
   set(CPPUNIT_LIBRARY_PATH "lib/cppunitd.lib")
-  set(ABEARGS_LIBRARY_PATH "../build/lib/Debug/AbeArgsd.lib")
+  set(ABEARGS_LIBRARY_PATH "../build/abeargs_lib/Debug/AbeArgsd.lib")
 endif()
 
 # Unpack thirdparty libraries.

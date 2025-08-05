@@ -73,7 +73,7 @@ enum ArgumentType : int
 class Argument
 {
   public:
-    Argument();
+    Argument() = default;
     Argument(ArgumentType p_arg_class,
              int p_arg_ID,
              const std::string& p_short_flag_name = DEFAULT_SHORT_FLAG_NAME,
@@ -81,13 +81,9 @@ class Argument
              const std::string& p_description = DEFAULT_FLAG_DESC,
              ArgumentType p_value_type = ArgumentType::DEFAULT_VALUE_TYPE,
              size_t p_num_params = DEFAULT_NUM_FLAG_PARAMS);
-    Argument(const Argument& p_rhs) = default; // Copy constructor
-    Argument(Argument&& p_rhs) = default;      // Move constructor
     ~Argument() = default;
 
   public:
-    Argument& operator=(const Argument& p_rhs) = default;
-
     int getID() const { return m_arg_ID; }
     ArgumentType getClass() const { return m_class; }
     ArgumentType getValueType() const { return m_value_type; }

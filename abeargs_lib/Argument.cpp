@@ -21,8 +21,6 @@ namespace AbeArgs {
 
 static size_t s_longest_long_name = 0;
 
-Argument::Argument() = default;
-
 Argument::Argument(ArgumentType p_arg_class,
                    int p_arg_ID,
                    const std::string& p_short_flag_name,
