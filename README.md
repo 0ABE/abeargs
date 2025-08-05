@@ -90,6 +90,40 @@ int main(int argc, char* argv[]) {
 }
 ```
 
+## Building and Installing cppunit with Multiple Compilers
+
+The following steps guide you through building and installing `cppunit` in a way that allows you to link it with different C++ compilers. This process creates an isolated build and installation directory, ensuring that your main system environment remains unaffected. The steps are as follows:
+
+1. **Create a Build Directory:**  
+   This keeps build artifacts separate from your source code, making it easier to manage and clean up.
+
+2. **Navigate to the Build Directory:**  
+   All subsequent build commands will be executed from within this directory.
+
+3. **Configure the Build:**  
+   The `configure` script is run with custom compiler flags (`-g -O0` for debugging) and the `--enable-debug` option. The `--prefix` option specifies a local installation directory inside the build folder, allowing you to install multiple versions or builds for different compilers without conflicts.
+
+4. **Compile the Source:**  
+   The `make` command builds the library using the selected compiler and flags.
+
+5. **Install the Library:**  
+   The `make install` command installs the built library and headers into the specified prefix directory, making it easy to link against this version from your projects.
+
+6. **Archive the Files:**
+   Compress the folders/files into a .zip or .tar.gz archive to be included in the thirdparty libs.
+
+By repeating these steps with different compiler environments (e.g., by setting the `CXX` environment variable before running `configure`), you can maintain separate builds of `cppunit` for each compiler you wish to support.
+
+```
+0) begin in the cppunit root directory
+1) mkdir build
+2) cd build
+3) ../configure CXXFLAGS='-g -O0' --enable-debug --prefix=$(pwd)/build/
+4) make
+5) make install
+6) archive the folders/files for inclusion in the thirdparty libs folder
+```
+
 ## License
 
 This project is licensed under the [Universal Permissive License v 1.0](https://oss.oracle.com/licenses/upl/).
